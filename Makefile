@@ -11,7 +11,7 @@ PARSER_BASE_NAME=hamlet
 LEXER_NAME=$(PARSER_BASE_NAME)_lexer
 PARSER_NAME=$(PARSER_BASE_NAME)_parser
 
-all: compile
+all: compile docs
 
 compile:
 	mkdir -p $(EBIN_DIR)
@@ -26,8 +26,8 @@ compile:
 	$(ERLC)/*.erl	
 
 docs:
-	$(ERL) -noshell -run edoc file $(SOURCE_DIR)/leex.erl -run init stop
-	$(ERL) -noshell -run edoc_run application "'Leex'" '"."' '[no_packages]'
+	$(ERL) -noshell -run edoc file $(SOURCE_DIR)/hamlet.erl -run init stop
+	$(ERL) -noshell -run edoc_run application "'Hamlet'" '"."' '[no_packages]'
 	mv $(SOURCE_DIR)/*.html $(DOC_DIR)/
 
 clean:

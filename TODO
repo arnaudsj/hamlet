@@ -1,0 +1,13 @@
+- FIX how to deal with WS:
+
+hamlet:parse("key1:val1\n").             
+{hamlet:12}: "Tokens" -> [{element,1,"key1"},
+                          {semicolon,1,":"},
+                          {element,1,"val1"},
+                          {eol,2,"\n"}]
+** exception error: no match of right hand side value {error,{999999,hamlet_parser,["syntax error before: ",[]]}}
+     in function  hamlet:parse/1
+
+- GET deep recursion working for lists
+
+- Setup tests with EUNIT 

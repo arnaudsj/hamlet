@@ -207,14 +207,8 @@ yysuf(List, N) -> lists:nthtail(N, List).
 
 yystate() -> 3.
 
-yystate(6, [$\n|Ics], Line, Tlen, _, _) ->
-    yystate(4, Ics, Line+1, Tlen+1, 4, Tlen);
-yystate(6, [C|Ics], Line, Tlen, _, _) when C >= $\000, C =< $\t ->
-    yystate(6, Ics, Line, Tlen+1, 4, Tlen);
-yystate(6, [C|Ics], Line, Tlen, _, _) when C >= $\v, C =< $ÿ ->
-    yystate(6, Ics, Line, Tlen+1, 4, Tlen);
 yystate(6, Ics, Line, Tlen, _, _) ->
-    {4,Tlen,Ics,Line,6};
+    {2,Tlen,Ics,Line};
 yystate(5, [$_|Ics], Line, Tlen, _, _) ->
     yystate(5, Ics, Line, Tlen+1, 0, Tlen);
 yystate(5, [C|Ics], Line, Tlen, _, _) when C >= $0, C =< $9 ->
@@ -225,20 +219,16 @@ yystate(5, [C|Ics], Line, Tlen, _, _) when C >= $a, C =< $z ->
     yystate(5, Ics, Line, Tlen+1, 0, Tlen);
 yystate(5, Ics, Line, Tlen, _, _) ->
     {0,Tlen,Ics,Line,5};
-yystate(4, [$\n|Ics], Line, Tlen, _, _) ->
-    yystate(4, Ics, Line+1, Tlen+1, 4, Tlen);
-yystate(4, [$%|Ics], Line, Tlen, _, _) ->
-    yystate(6, Ics, Line, Tlen+1, 4, Tlen);
-yystate(4, [C|Ics], Line, Tlen, _, _) when C >= $\000, C =< $\t ->
-    yystate(4, Ics, Line, Tlen+1, 4, Tlen);
-yystate(4, [C|Ics], Line, Tlen, _, _) when C >= $\v, C =< $\s ->
-    yystate(4, Ics, Line, Tlen+1, 4, Tlen);
-yystate(4, Ics, Line, Tlen, _, _) ->
-    {4,Tlen,Ics,Line,4};
+yystate(4, [$\s|Ics], Line, Tlen, Action, Alen) ->
+    yystate(4, Ics, Line, Tlen+1, Action, Alen);
+yystate(4, [$-|Ics], Line, Tlen, Action, Alen) ->
+    yystate(6, Ics, Line, Tlen+1, Action, Alen);
+yystate(4, Ics, Line, Tlen, Action, Alen) ->
+    {Action,Alen,Tlen,Ics,Line,4};
 yystate(3, [$\n|Ics], Line, Tlen, Action, Alen) ->
     yystate(0, Ics, Line+1, Tlen+1, Action, Alen);
-yystate(3, [$%|Ics], Line, Tlen, Action, Alen) ->
-    yystate(6, Ics, Line, Tlen+1, Action, Alen);
+yystate(3, [$\s|Ics], Line, Tlen, Action, Alen) ->
+    yystate(4, Ics, Line, Tlen+1, Action, Alen);
 yystate(3, [$'|Ics], Line, Tlen, Action, Alen) ->
     yystate(1, Ics, Line, Tlen+1, Action, Alen);
 yystate(3, [$-|Ics], Line, Tlen, Action, Alen) ->
@@ -247,10 +237,6 @@ yystate(3, [$:|Ics], Line, Tlen, Action, Alen) ->
     yystate(1, Ics, Line, Tlen+1, Action, Alen);
 yystate(3, [$_|Ics], Line, Tlen, Action, Alen) ->
     yystate(5, Ics, Line, Tlen+1, Action, Alen);
-yystate(3, [C|Ics], Line, Tlen, Action, Alen) when C >= $\000, C =< $\t ->
-    yystate(4, Ics, Line, Tlen+1, Action, Alen);
-yystate(3, [C|Ics], Line, Tlen, Action, Alen) when C >= $\v, C =< $\s ->
-    yystate(4, Ics, Line, Tlen+1, Action, Alen);
 yystate(3, [C|Ics], Line, Tlen, Action, Alen) when C >= $0, C =< $9 ->
     yystate(5, Ics, Line, Tlen+1, Action, Alen);
 yystate(3, [C|Ics], Line, Tlen, Action, Alen) when C >= $A, C =< $Z ->
@@ -260,19 +246,11 @@ yystate(3, [C|Ics], Line, Tlen, Action, Alen) when C >= $a, C =< $z ->
 yystate(3, Ics, Line, Tlen, Action, Alen) ->
     {Action,Alen,Tlen,Ics,Line,3};
 yystate(2, Ics, Line, Tlen, _, _) ->
-    {2,Tlen,Ics,Line};
+    {3,Tlen,Ics,Line};
 yystate(1, Ics, Line, Tlen, _, _) ->
     {1,Tlen,Ics,Line};
-yystate(0, [$\n|Ics], Line, Tlen, _, _) ->
-    yystate(4, Ics, Line+1, Tlen+1, 3, Tlen);
-yystate(0, [$%|Ics], Line, Tlen, _, _) ->
-    yystate(6, Ics, Line, Tlen+1, 3, Tlen);
-yystate(0, [C|Ics], Line, Tlen, _, _) when C >= $\000, C =< $\t ->
-    yystate(4, Ics, Line, Tlen+1, 3, Tlen);
-yystate(0, [C|Ics], Line, Tlen, _, _) when C >= $\v, C =< $\s ->
-    yystate(4, Ics, Line, Tlen+1, 3, Tlen);
 yystate(0, Ics, Line, Tlen, _, _) ->
-    {3,Tlen,Ics,Line,0};
+    {4,Tlen,Ics,Line};
 yystate(S, Ics, Line, Tlen, Action, Alen) ->
     {Action,Alen,Tlen,Ics,Line,S}.
 
@@ -288,10 +266,11 @@ yyaction(1, TokenLen, YYtcs, TokenLine) ->
     {token,{semicolon,TokenLine,TokenChars}};
 yyaction(2, TokenLen, YYtcs, TokenLine) ->
     TokenChars = yypre(YYtcs, TokenLen),
-    {token,{dash,TokenLine,TokenChars}};
+    {token,{idash,TokenLine,TokenChars}};
 yyaction(3, TokenLen, YYtcs, TokenLine) ->
     TokenChars = yypre(YYtcs, TokenLen),
+    {token,{dash,TokenLine,TokenChars}};
+yyaction(4, TokenLen, YYtcs, TokenLine) ->
+    TokenChars = yypre(YYtcs, TokenLen),
     {token,{eol,TokenLine,TokenChars}};
-yyaction(4, _, _, _) ->
-    skip_token;
 yyaction(_, _, _, _) -> error.

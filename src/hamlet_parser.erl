@@ -210,7 +210,8 @@ yeccpars2_1(_S, '$end', _Ss, Stack,  _T, _Ts, _Tzr) ->
 yeccpars2_2(S, eol, Ss, Stack, T, Ts, Tzr) ->
  yeccpars1(S, 18, Ss, Stack, T, Ts, Tzr);
 yeccpars2_2(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccgoto_statements(hd(Ss), Cat, Ss, Stack, T, Ts, Tzr).
+ NewStack = yeccpars2_2_(Stack),
+ yeccgoto_statements(hd(Ss), Cat, Ss, NewStack, T, Ts, Tzr).
 
 yeccpars2_3(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
  yeccgoto_statement(hd(Ss), Cat, Ss, Stack, T, Ts, Tzr).
@@ -318,6 +319,14 @@ yeccgoto_statements(0, Cat, Ss, Stack, T, Ts, Tzr) ->
 yeccgoto_statements(18=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
  yeccpars2_19(_S, Cat, Ss, Stack, T, Ts, Tzr).
 
+-compile({inline,{yeccpars2_2_,1}}).
+-file("src/hamlet_parser.yrl", 5).
+yeccpars2_2_(__Stack0) ->
+ [__1 | __Stack] = __Stack0,
+ [begin
+   [ __1 ]
+  end | __Stack].
+
 -compile({inline,{yeccpars2_7_,1}}).
 -file("src/hamlet_parser.yrl", 6).
 yeccpars2_7_(__Stack0) ->
@@ -395,7 +404,7 @@ yeccpars2_17_(__Stack0) ->
 yeccpars2_19_(__Stack0) ->
  [__3,__2,__1 | __Stack] = __Stack0,
  [begin
-   [ __1 , __3 ]
+   [ __1 | __3 ]
   end | __Stack].
 
 

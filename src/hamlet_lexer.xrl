@@ -2,12 +2,12 @@
 
 Definitions.
 
-T   = [A-Za-z0-9_]
-SEMIC = [':']
+T   = [A-Za-z0-9_\s\.]
+SEMIC = [':']\s*
 IDASH = [\s]+\-
-DASH = [\-]
+DASH = [\-]\s*
 NL = ['\n']
-%WS  = ([\000-\s]|%.*)
+WS  = ([\000-\s]|%.*)
 
 
 Rules.
@@ -17,7 +17,7 @@ Rules.
 {IDASH}		:	{token,{idash, TokenLine, TokenChars}}.
 {DASH}		:	{token,{dash, TokenLine, TokenChars}}.
 {NL}		:	{token,{eol, TokenLine, TokenChars}}.
-%{WS}+       :   skip_token.
+{WS}+       :   skip_token.
 
 Erlang code.
 

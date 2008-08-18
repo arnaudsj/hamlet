@@ -3,7 +3,7 @@ SOURCE_DIR=src
 INCLUDE_DIR=include
 DOC_DIR=doc
 
-ERLC_FLAGS=-W0 -Ddebug +debug_info
+ERLC_FLAGS=-W0 -Ddebug +debug_info -DTEST 
 ERLC=erlc -I $(INCLUDE_DIR) -o $(EBIN_DIR) $(ERLC_FLAGS) $(SOURCE_DIR)
 ERL=erl -I -pa ebin -noshell -eval
 
@@ -11,7 +11,7 @@ PARSER_BASE_NAME=hamlet
 LEXER_NAME=$(PARSER_BASE_NAME)_lexer
 PARSER_NAME=$(PARSER_BASE_NAME)_parser
 
-all: compile docs
+all: compile test
 
 compile:
 	mkdir -p $(EBIN_DIR)
@@ -34,3 +34,7 @@ clean:
 	rm -rf erl_crash.dump 
 	rm -rf $(EBIN_DIR)/*.beam
 	rm -rf $(DOC_DIR)/*.html
+	
+test:
+	@echo Testing...
+	@erl -noshell -pa ebin -s hamlet test -s init stop
